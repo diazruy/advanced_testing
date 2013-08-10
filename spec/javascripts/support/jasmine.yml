@@ -11,8 +11,7 @@
 #   - dist/**/*.js
 #
 src_files:
-    - "**/*.js"
-    - "**/*.js.coffee"
+    - "**/*.*"
 
 # stylesheets
 #
@@ -51,8 +50,7 @@ helpers:
 #   - **/*[sS]pec.js
 #
 spec_files:
-  - '**/*[sS]pec.js'
-  - '**/*[sS]pec.js.coffee'
+  - '**/*[sS]pec.*'
 
 # src_dir
 #

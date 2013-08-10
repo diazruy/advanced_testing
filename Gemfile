@@ -13,7 +13,7 @@ end
 gem 'jquery-rails'
 
 group :development, :test do
-  gem 'jasminerice', git: 'https://github.com/bradphelan/jasminerice.git'
+  gem 'jasminerice',             github: 'bradphelan/jasminerice'
   gem 'jasmine-headless-webkit', '~> 0.8.4'
-  gem 'jasmine-spec-extras',    '~> 0.0.2'
+  gem 'jasmine-spec-extras',     '~> 0.0.2'
 end
