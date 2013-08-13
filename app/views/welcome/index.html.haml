@@ -2,22 +2,5 @@
   Hello World
 
 :javascript
-  // Global variables are BAD
-  var $container = $('#container');
-
-  // Function in global namespace BAD
-  function changeColor(){
-    var r, g, b;
-    r = randomColor();
-    g = randomColor();
-    b = randomColor();
-    // Reference to global variable, impossible to reuse code
-    $container.css('color','rgb('+r+','+g+','+b+')');
-  }
-
-  function randomColor(){
-    return Math.floor(Math.random() * 255);
-  }
-
-  $container.click(changeColor);
+  new Widget('#container');
 
