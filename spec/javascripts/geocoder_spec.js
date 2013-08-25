@@ -10,24 +10,35 @@ describe('Geocoder', function(){
     var address = "Waterfront Station, Vancouver";
     var callback = jasmine.createSpy();
 
-    spyOn($, 'getJSON').andCallFake(function(url, params, jsonCallback){
-      jsonCallback({results: [{formatted_address: 'Waterfront Skytrain, Vancouver, BC V6B, Canada'}]});
+    runs(function(){
+      geocoder.geocode(address, callback);
     });
 
-    geocoder.geocode(address, callback);
-    expect(callback).toHaveBeenCalled();
-    expect(callback).toHaveBeenCalledWith('Waterfront Skytrain, Vancouver, BC V6B, Canada');
+    waitsFor(function(){
+      return callback.callCount > 0;
+    }, 300);
+
+    runs(function(){
+      expect(callback).toHaveBeenCalled();
+      expect(callback).toHaveBeenCalledWith('Waterfront Skytrain, Vancouver, BC V6B, Canada');
+    });
   });
 
   it('returns null when no results are found', function(){
     var address = "asfasdasdf";
     var callback = jasmine.createSpy();
 
-    spyOn($, 'getJSON').andCallFake(function(url, params, jsonCallback){
-      jsonCallback({results: []});
+    runs(function(){
+      geocoder.geocode(address, callback);
     });
 
-    geocoder.geocode(address, callback);
-    expect(callback).toHaveBeenCalledWith(null);
+    waitsFor(function(){
+      return callback.callCount > 0;
+    }, 300);
+
+    runs(function(){
+      expect(callback).toHaveBeenCalled();
+      expect(callback).toHaveBeenCalledWith(null);
+    });
   });
 });
