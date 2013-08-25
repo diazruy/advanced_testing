@@ -1,86 +1,67 @@
 //= require widget
 describe('Widget', function(){
+  var $fixture, widget, geocoder;
+
+  beforeEach(function(){
+    jasmine.Clock.useMock();
+
+    $fixture = $("<input type='text' id='address' value=''/><div id='results'>");
+    $('body').append($fixture);
+
+    geocoder = {
+      geocode: function(input, callback) {
+        callback(input);
+      }
+    }
+
+    spyOn(window, 'Geocoder').andReturn(geocoder)
+
+    widget = new Widget('#address', '#results');
+  });
+
+  afterEach(function(){
+    $fixture.remove()
+  });
 
   it("displays the results", function(){
-    var $fixture = $("<input type='text' id='address' value=''/><div id='results'>");
-    $('body').append($fixture);
-    var widget = new Widget('#address', '#results');
+    $('#address').val('Waterfront');
+    $('#address').trigger('keyup');
+    jasmine.Clock.tick(300);
 
-    runs(function(){
-      $('#address').val('Waterfront');
-      $('#address').trigger('keyup');
-    })
-
-    waitsFor(function(){ return $('#results').html().length > 0; }, 500);
-
-    runs(function(){
-      expect($('#results').html()).not.toEqual('');
-      $fixture.remove();
-    });
+    expect($('#results').html()).toEqual('Waterfront');
   });
 
   it("displays 'No results' when no results are found", function(){
-    var $fixture = $("<input type='text' id='address' value=''/><div id='results'>");
-    $('body').append($fixture);
-    var widget = new Widget('#address', '#results');
-
-    runs(function(){
-      $('#address').val('asdfasdfasdfasdf');
-      $('#address').trigger('keyup');
-    })
-
-    waitsFor(function(){ return $('#results').html() != 'Searching...'; }, 500);
-
-    runs(function(){
-      expect($('#results').html()).toEqual('No matches found');
-      $fixture.remove();
+    spyOn(geocoder, 'geocode').andCallFake(function(input, callback){
+      callback(null);
     });
+
+    $('#address').val('asdfasdfasdfasdf');
+    $('#address').trigger('keyup');
+    jasmine.Clock.tick(300);
+
+    expect($('#results').html()).toEqual('No matches found');
   });
 
   it("searches for the given address 300ms after last change", function(){
-    var $fixture = $("<input type='text' id='address' value=''/><div id='results'>");
-    $('body').append($fixture);
-    var widget = new Widget('#address', '#results');
+    $('#address').val('Waterfront');
+    $('#address').trigger('keyup');
 
-    runs(function(){
-      $('#address').val('Waterfront');
-      $('#address').trigger('keyup');
-      expect($('#results').html()).toEqual('Searching...');
-    });
+    jasmine.Clock.tick(250);
+    expect($('#results').html()).not.toEqual('Waterfront');
 
-    waits(250);
-
-    runs(function(){
-      expect($('#results').html()).toEqual('Searching...');
-    });
-
-    waitsFor(function(){ return $('#results').html() != 'Searching...'; }, 500);
-
-    runs(function(){
-      expect($('#results').html()).not.toEqual('Searching...');
-      $fixture.remove();
-    });
-
+    jasmine.Clock.tick(51);
+    expect($('#results').html()).toEqual('Waterfront');
   });
 
   it("displays 'Searching...' while waiting", function(){
-    var $fixture = $("<input type='text' id='address' value=''/><div id='results'>");
-    $('body').append($fixture);
-    var widget = new Widget('#address', '#results');
-
-    runs(function(){
-      $('#address').val('Waterfront');
-      $('#address').trigger('keyup');
-      expect($('#results').html()).toEqual('Searching...');
-    })
-
-    waitsFor(function(){ return $('#results').html() != 'Searching...'; }, 500);
-
-    runs(function(){
-      expect($('#results').html()).not.toEqual('Searching...');
-      $fixture.remove();
-    });
+    $('#address').val('Waterfront');
+    $('#address').trigger('keyup');
+    expect($('#results').html()).toEqual('Searching...');
+    jasmine.Clock.tick(250);
+    expect($('#results').html()).toEqual('Searching...');
+    jasmine.Clock.tick(51);
+    expect($('#results').html()).not.toEqual('Searching...');
   });
-
 });
 

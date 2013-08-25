@@ -37,7 +37,6 @@ describe('Geocoder', function(){
     }, 300);
 
     runs(function(){
-      expect(callback).toHaveBeenCalled();
       expect(callback).toHaveBeenCalledWith(null);
     });
   });
