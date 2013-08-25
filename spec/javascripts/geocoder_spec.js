@@ -1,43 +1,46 @@
 //= require geocoder
 describe('Geocoder', function(){
-  var geocoder;
+  var geocoder, server;
 
   beforeEach(function(){
+    server = sinon.fakeServer.create();
     geocoder = new Geocoder();
+  });
+
+  afterEach(function(){
+    server.restore();
   });
 
   it("executes the callback with the first matched address as an argument", function(){
     var address = "Waterfront Station, Vancouver";
-    var callback = jasmine.createSpy();
+    var callback = sinon.spy();
 
-    runs(function(){
-      geocoder.geocode(address, callback);
-    });
+    server.respondWith(new RegExp("http://maps.googleapis.com/maps/api/geocode/json"), [
+      200,
+      {'Content-Type': 'application/json'},
+      JSON.stringify({results: [{formatted_address: 'Waterfront Skytrain, Vancouver, BC V6B, Canada'}]})
+    ]);
 
-    waitsFor(function(){
-      return callback.callCount > 0;
-    }, 300);
+    geocoder.geocode(address, callback);
+    server.respond();
 
-    runs(function(){
-      expect(callback).toHaveBeenCalled();
-      expect(callback).toHaveBeenCalledWith('Waterfront Skytrain, Vancouver, BC V6B, Canada');
-    });
+    expect(callback).toHaveBeenCalled();
+    expect(callback).toHaveBeenCalledWith('Waterfront Skytrain, Vancouver, BC V6B, Canada');
   });
 
   it('returns null when no results are found', function(){
     var address = "asfasdasdf";
-    var callback = jasmine.createSpy();
+    var callback = sinon.spy();
 
-    runs(function(){
-      geocoder.geocode(address, callback);
-    });
+    server.respondWith(new RegExp("http://maps.googleapis.com/maps/api/geocode/json"), [
+      200,
+      {'Content-Type': 'application/json'},
+      JSON.stringify({results: []})
+    ]);
 
-    waitsFor(function(){
-      return callback.callCount > 0;
-    }, 300);
+    geocoder.geocode(address, callback);
+    server.respond();
 
-    runs(function(){
-      expect(callback).toHaveBeenCalledWith(null);
-    });
+    expect(callback).toHaveBeenCalledWith(null);
   });
 });
