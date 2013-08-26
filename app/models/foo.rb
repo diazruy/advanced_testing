@@ -1,5 +1,5 @@
 class Foo < ActiveRecord::Base
   include NameConcatenator
 
-  attr_accessible :first_name, :last_name
+  attr_accessible :first_name, :last_name, :published, :active
 end
