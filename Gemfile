@@ -19,4 +19,5 @@ group :development, :test do
   gem 'jasmine-headless-webkit', github: 'johnbintz/jasmine-headless-webkit'
   gem 'jasmine-spec-extras',     '~> 0.0.2'
   gem 'factory_girl',            '~> 4.2.0'
+  gem 'factory_girl_rails',      '~> 4.2.1'
 end
