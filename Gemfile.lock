@@ -1,12 +1,12 @@
 GIT
-  remote: git://github.com/bradphelan/jasminerice.git
+  remote: git@github.com:bradphelan/jasminerice.git
   revision: 091349c27343bfa728b8e5745675f9ddbb7d9699
   specs:
     jasminerice (0.1.0)
       coffee-rails
 
 GIT
-  remote: git://github.com/johnbintz/jasmine-headless-webkit.git
+  remote: git@github.com:johnbintz/jasmine-headless-webkit.git
   revision: 1055dc1016077eb09831cb8a9a0eaa6349285a15
   specs:
     jasmine-headless-webkit (0.9.0.rc.2)

@@ -15,7 +15,7 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem 'rspec-rails',            '~> 2.14.0'
-  gem 'jasminerice',             github: 'bradphelan/jasminerice'
-  gem 'jasmine-headless-webkit', github: 'johnbintz/jasmine-headless-webkit'
+  gem 'jasminerice',             git: 'git@github.com:bradphelan/jasminerice.git'
+  gem 'jasmine-headless-webkit', git: 'git@github.com:johnbintz/jasmine-headless-webkit.git'
   gem 'jasmine-spec-extras',     '~> 0.0.2'
 end
