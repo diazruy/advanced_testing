@@ -10,8 +10,8 @@ describe Foo do
 
   describe ".published" do
     it "returns all the published foos" do
-      john = Foo.create!(first_name: 'John', last_name: 'Doe', published: true)
-      rick = Foo.create!(first_name: 'Rick', last_name: 'Smith', published: false)
+      john = create :foo, :published
+      rick = create :foo, :unpublished
 
       expect(Foo.published).to have(1).item
       expect(Foo.published.first).to eq(john)
@@ -20,8 +20,8 @@ describe Foo do
 
   describe ".active" do
     it "returns all the active foos" do
-      john = Foo.create!(first_name: 'John', last_name: 'Doe', active: true)
-      rick = Foo.create!(first_name: 'Rick', last_name: 'Smith', active: false)
+      john = create :foo, :active
+      rick = create :foo, :inactive
 
       expect(Foo.active).to have(1).item
       expect(Foo.active.first).to eq(john)
